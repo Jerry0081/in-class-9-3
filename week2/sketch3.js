@@ -10,7 +10,8 @@ function setup(){
 
 function draw(){
     background(100)
-    fill(0)
+    fill(100,50,50)
+    noStroke()
     ellipse(x,y,diameter)
     //x+=3
     x+=xV
