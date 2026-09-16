@@ -37,4 +37,8 @@ function draw() {
     if (x < diameter/2) {
         xV=-xV
     }
+
+}
+function keyPressed(){
+    background(255)
 }
