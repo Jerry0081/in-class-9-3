@@ -17,7 +17,7 @@ function draw(){
 
     if(y>height-diameter/2){
         fill(255,0,0)
-        yV = -yV;
+        yV = -yV
         xV = random(-10,20)
 
     }
