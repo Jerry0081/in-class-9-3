@@ -1,8 +1,8 @@
-let x;
-let y;
-let xV = 5;
-let yV = 5;
-let diameter = 100;
+let x
+let y
+let xV = 5
+let yV = 5
+let diameter = 100
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
@@ -13,28 +13,28 @@ function setup() {
 
 function draw() {
 
-    let r = map(y, diameter / 2, height - diameter / 2, 0, 255)
-    let b = map(x,diameter / 2, height - diameter / 2, 0, 255)
+    let r=map(y, diameter / 2, height - diameter / 2, 0, 255)
+    let b=map(x,diameter / 2, height - diameter / 2, 0, 255)
    
     fill(r, 0, b)
     ellipse(x, y, diameter)
-    x += xV
-    y += yV
+    x+=xV
+    y+=yV
 
     if (y > height - diameter/2) {
-        yV = -yV
+        yV=-yV
     }
 
   
     if (y < diameter/2) {
-        yV = -yV
+        yV=-yV
     }
 
     if (x > width - diameter/2) {
-        xV = -xV
+        xV=-xV
     }
 
     if (x < diameter/2) {
-        xV = -xV
+        xV=-xV
     }
 }
