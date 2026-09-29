@@ -68,7 +68,7 @@ function drawPattern(){
             translate(px, py)
 
 
-            // 距离影响大小
+            
             let size = map(
                 d,
                 0,
@@ -78,7 +78,7 @@ function drawPattern(){
             )
 
 
-            // 距离影响圆角
+            
             let round = map(
                 d,
                 0,
@@ -88,7 +88,7 @@ function drawPattern(){
             )
 
 
-            // 距离影响旋转
+            
             rotate(r * d)
 
 
@@ -109,7 +109,6 @@ function drawPattern(){
 }
 
 
-// ============================
 
 
 function keyPressed(){
@@ -132,8 +131,7 @@ function saveSVG(){
         "generative-pattern.svg"
     )
 
-    // 只画 pattern
-    // 不调用 background()
+ 
     drawPattern()
 
     endRecordSVG()
