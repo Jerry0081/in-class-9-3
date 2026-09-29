@@ -6,7 +6,7 @@ let h
 
 function setup(){
 
-    createCanvas(windowWidth, windowHeight)
+    createCanvas(windowWidth, windowHeight, SVG)
 
     rectMode(CENTER)
     angleMode(DEGREES)
@@ -99,10 +99,9 @@ function drawPattern(){
 function keyPressed(){
 
     if(key === 's' || key === 'S'){
-
-        saveSVG()
-
+        save("generative-pattern.svg")
     }
+
 }
 
 
