@@ -21,16 +21,12 @@ function setup(){
 
 function draw(){
 
-  
     background(40, 55, 40)
 
-    
     drawPattern()
 
-   
     r += 3
 }
-
 
 
 function drawPattern(){
@@ -49,26 +45,23 @@ function drawPattern(){
             let px = w * x
             let py = h * y
 
-
-           
             let d = dist(mouseX, mouseY, px, py)
 
             d = map(d, 0, 1000, 1, 0)
             d = constrain(d, 0, 1)
 
-
-          
-            let c = lerpColor(warmColor,coldColor,d)
+            let c = lerpColor(
+                warmColor,
+                coldColor,
+                d
+            )
 
             stroke(c)
-
 
             push()
 
             translate(px, py)
 
-
-            
             let size = map(
                 d,
                 0,
@@ -77,8 +70,6 @@ function drawPattern(){
                 2.5
             )
 
-
-            
             let round = map(
                 d,
                 0,
@@ -87,10 +78,7 @@ function drawPattern(){
                 25
             )
 
-
-            
             rotate(r * d)
-
 
             rect(
                 0,
@@ -100,15 +88,12 @@ function drawPattern(){
                 round
             )
 
-
             pop()
         }
     }
 
     pop()
 }
-
-
 
 
 function keyPressed(){
@@ -118,10 +103,7 @@ function keyPressed(){
         saveSVG()
 
     }
-
 }
-
-
 
 
 function saveSVG(){
@@ -131,7 +113,6 @@ function saveSVG(){
         "generative-pattern.svg"
     )
 
- 
     drawPattern()
 
     endRecordSVG()
