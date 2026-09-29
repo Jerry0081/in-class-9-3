@@ -55,3 +55,11 @@ function draw(){
 
 r+=3
 }
+
+function saveSVG(){
+    beginRecordSVG(this, "generative-pattern.svg")
+    redraw()
+    endRecordSVG()
+
+
+}
