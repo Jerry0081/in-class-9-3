@@ -1,43 +1,132 @@
+let r = 0
+let numRects = 5
+let w
+let h
 
-//let wavesPerCanvas=8
-//let amplitude=50
-//let offset=0
-//let yLoc
-//let speed=0.1
 
 function setup(){
-    createCanvas(windowWidth,windowHeight)
 
-    //yLoc=height/2
+    createCanvas(windowWidth, windowHeight, SVG)
+
+    angleMode(DEGREES)
 
     noFill()
+    strokeWeight(3)
+
+    w = width / numRects
+    h = height / numRects
 }
+
 
 function draw(){
-    background(230)
-    
-  sinWave(4,150,height/2,0.05)
-    sinWave(8,80,height*0.8,0.2)
-    
+
+    background(40, 55, 40)
+
+    drawPattern()
+
+    r += 3
 }
 
-function sinWave(wavesPerCanvas,amplitude,offset,yLoc,speed){
-    let offset=frameCount*speed
+
+function drawPattern(){
+
+    let warmColor = color(255, 100, 30)
+    let coldColor = color(40, 150, 255)
 
     push()
-    translate(0,yLoc)
 
-    beginShape()
-    for(let i=0; i<width;i++){
-        mappedI=map(i,0,width,0,wavesPerCanvas*TWO_PI)
+    translate(w/2, h/2)
 
-        let y=sin(mappedI+offset)*amplitude
-        let x=i
-        vertex(x,y)
+    for(let x = 0; x < numRects; x++){
+
+        for(let y = 0; y < numRects; y++){
+
+            let px = w * x
+            let py = h * y
+
+
+            
+            let d = dist(
+                px + w/2,
+                py + h/2,
+                width/2,
+                height/2
+            )
+
+
+            
+            let maxD = dist(
+                0,
+                0,
+                width/2,
+                height/2
+            )
+
+
+            
+            let centerD = map(
+                d,
+                0,
+                maxD,
+                1,
+                0
+            )
+
+            centerD = constrain(centerD, 0, 1)
+
+
+            
+            let numCircles = floor(
+                map(centerD, 0, 1, 1, 10)
+            )
+
+
+            
+            let c = lerpColor(
+                warmColor,
+                coldColor,
+                centerD
+            )
+
+            stroke(c)
+
+
+            push()
+
+            translate(px, py)
+
+
+         
+            for(let i = 0; i < numCircles; i++){
+
+                let size = map(
+                    i,
+                    0,
+                    numCircles,
+                    w * 0.2,
+                    w * 1.5
+                )
+
+                circle(
+                    0,
+                    0,
+                    size
+                )
+            }
+
+
+            pop()
+        }
     }
-    endShape()
-   
+
     pop()
-    
-    
+}
+
+
+function keyPressed(){
+
+    if(key === 's' || key === 'S'){
+        save("generative-pattern.svg")
+    }
+
 }
