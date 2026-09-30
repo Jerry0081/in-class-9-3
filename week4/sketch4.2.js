@@ -50,11 +50,7 @@ function drawPattern(){
             d = map(d, 0, 1000, 1, 0)
             d = constrain(d, 0, 1)
 
-            let c = lerpColor(
-                warmColor,
-                coldColor,
-                d
-            )
+            let c = lerpColor(warmColor,coldColor,d)
 
             stroke(c)
 
@@ -62,31 +58,13 @@ function drawPattern(){
 
             translate(px, py)
 
-            let size = map(
-                d,
-                0,
-                1,
-                0.5,
-                2.5
-            )
+            let size = map(d,0,1,0.5,2.5)
 
-            let round = map(
-                d,
-                0,
-                1,
-                0,
-                25
-            )
+            let round = map(d,0,1,0,25)
 
             rotate(r * d)
 
-            rect(
-                0,
-                0,
-                w * size,
-                h * size,
-                round
-            )
+            rect(0,0,w * size,h * size,round)
 
             pop()
         }
