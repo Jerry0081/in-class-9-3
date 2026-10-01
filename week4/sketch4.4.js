@@ -1,75 +1,51 @@
-let cols=6
-let rows=4
-let cellSize=96
-let saveSvg=false
+let rotation=0
 
 function setup(){
-    createCanvas(500,500)
+    
+    createCanvas(600,600,SVG)
     angleMode(DEGREES)
-    stroke(0)
-    strokeWeight(1.5)
     noFill()
+    stroke(255)
+    strokeWeight(0.5)
 }
 
 function draw(){
-    background(255)
 
-    for(let x=0;x<cols;x++){
-        for(let y=0;y<rows;y++){
+    background(0)
 
-            let px=x*cellSize+cellSize/2
-            let py=y*cellSize+cellSize/2
+    let d=dist(mouseX,mouseY,width/2,height/2)
+    let speed=map(d,0,30,3,0.1)
+    speed=constrain(speed,0.1,3)
 
-            let n=noise(x*0.35,y*0.35)
-            let angle=map(n,0,1,-60,60)
+    rotation+=speed
 
-            let ySize=map(y,0,rows-1,0.6,1.1)
+    push()
+    translate(width/2,height/2)
 
-            let d=dist(mouseX,mouseY,px,py)
-            let mouseEffect=map(d,0,250,1,0)
-            mouseEffect=constrain(mouseEffect,0,1)
+    for(let i=0;i<12;i++){
+        let wave=sin(frameCount*2+i*30)
+        let radius=30+i*10+wave*8
 
-            let size=ySize+mouseEffect*0.5
-            let mouseAngle=mouseEffect*70
-            let spacing=map(mouseEffect,0,1,10,16)
+        push()
 
-            push()
-            translate(px,py)
-            rotate(angle+mouseAngle)
-            scale(size)
+        rotate(rotation*(i+1)*0.15)
+        star(radius)
 
-            beginShape()
-            vertex(0,-35)
-            vertex(35,0)
-            vertex(0,35)
-            vertex(-35,0)
-            endShape(CLOSE)
-
-            line(-35,0,35,0)
-            line(0,-35,0,35)
-
-            for(let i=-2;i<=2;i++){
-                let lineNoise=noise(x*0.4,y*0.4,i+10)
-                let shift=map(lineNoise,0,1,-8,8)
-
-                line(-30,i*spacing+shift,30,i*spacing-shift)
-            }
-
-            for(let i=-2;i<=2;i++){
-                let lineNoise=noise(x*0.3,y*0.3,i+20)
-                let shift=map(lineNoise,0,1,-8,8)
-
-                line(i*spacing+shift,-30,i*spacing-shift,30)
-            }
-
-            pop()
-        }
+        pop()
     }
+
+    pop()
+}
+
+function star(radius){
+
+    triangle(0,-radius,-radius*0.8,radius/2,radius*0.8,radius/2)
+    triangle(0,radius,-radius*0.8,-radius/2,radius*0.8,-radius/2)
 }
 
 function keyPressed(){
 
     if(key==='s'||key==='S'){
-        saveSvg=true
+        save("sin-star-pattern.svg")
     }
 }
