@@ -82,16 +82,3 @@ function keyPressed(){
 
 }
 
-
-function saveSVG(){
-
-    beginRecordSVG(
-        this,
-        "generative-pattern.svg"
-    )
-
-    drawPattern()
-
-    endRecordSVG()
-
-}
