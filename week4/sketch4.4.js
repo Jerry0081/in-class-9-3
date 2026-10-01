@@ -4,7 +4,7 @@ let cellSize=96
 let saveSvg=false
 
 function setup(){
-    createCanvas(576,384)
+    createCanvas(500,500)
     angleMode(DEGREES)
     stroke(0)
     strokeWeight(1.5)
