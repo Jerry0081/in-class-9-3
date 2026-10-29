@@ -1,7 +1,7 @@
 
 let pMapper
 let quadMaps=[]
-let tunnelBuf,wormBuf,transitionBuf,eyeBuf,mushroomBuf,flowerBuf
+let tunnelBuf,transitionBuf,eyeBuf,mushroomBuf,flowerBuf
 let video
 let isPlaying=false
 let calibrationMode=false
@@ -16,10 +16,7 @@ let paintBrush
 
 let snakeX=[]
 let snakeY=[]
-let wormX=[]
-let wormY=[]
 let snakeTime=0
-let wormTime=0
 let tunnelRotation=0
 let cardTimer=0
 let eyeTime=0
@@ -37,7 +34,6 @@ function setup(){
         [600,400],
         [600,400],
         [600,400],
-        [600,400],
         [450,338],
         [600,400]
     ]
@@ -47,14 +43,12 @@ function setup(){
     }
 
     tunnelBuf=createGraphics(600,600)
-    wormBuf=createGraphics(600,400)
     transitionBuf=createGraphics(600,400)
     eyeBuf=createGraphics(600,400)
     mushroomBuf=createGraphics(600,400)
     flowerBuf=createGraphics(600,400)
 
     tunnelBuf.angleMode(DEGREES)
-    wormBuf.angleMode(DEGREES)
     transitionBuf.angleMode(DEGREES)
     eyeBuf.angleMode(DEGREES)
     mushroomBuf.angleMode(DEGREES)
@@ -63,11 +57,6 @@ function setup(){
     for(let i=0;i<250;i++){
         snakeX.push(300)
         snakeY.push(300)
-    }
-
-    for(let i=0;i<100;i++){
-        wormX.push(300)
-        wormY.push(200)
     }
 
     for(let i=0;i<30;i++){
@@ -107,7 +96,7 @@ function setup(){
         })
     }
 
-    for(let i=0;i<50;i++){
+    for(let i=0;i<10;i++){
         flowers.push(new Flower(random(600),random(400)))
     }
 
@@ -122,23 +111,21 @@ function draw(){
     background(0)
 
     rabbitTunnelSketch(tunnelBuf)
-    plaidWormSketch(wormBuf)
     transitionSketch(transitionBuf)
     eyeTunnelSketch(eyeBuf)
     mushroomForestSketch(mushroomBuf)
     flowerRoseSketch(flowerBuf)
 
     quadMaps[0].displayTexture(tunnelBuf)
-    quadMaps[1].displayTexture(wormBuf)
-    quadMaps[2].displayTexture(transitionBuf)
-    quadMaps[3].displayTexture(eyeBuf)
-    quadMaps[4].displayTexture(mushroomBuf)
+    quadMaps[1].displayTexture(transitionBuf)
+    quadMaps[2].displayTexture(eyeBuf)
+    quadMaps[3].displayTexture(mushroomBuf)
 
     if(isPlaying&&video&&video.elt&&video.elt.readyState>=2){
-        quadMaps[5].displayTexture(video)
+        quadMaps[4].displayTexture(video)
     }
 
-    quadMaps[6].displayTexture(flowerBuf)
+    quadMaps[5].displayTexture(flowerBuf)
 }
 
 function rabbitTunnelSketch(pg){
@@ -163,7 +150,6 @@ function rabbitTunnelSketch(pg){
     pg.pop()
 
     tunnelRotation+=0.5
-
     snakeTime+=0.01
 
     for(let i=snakeX.length-1;i>0;i--){
@@ -247,7 +233,10 @@ class TunnelFlower{
 
     display(pg){
         pg.push()
-        pg.translate(300+cos(this.angle)*this.distance,300+sin(this.angle)*this.distance)
+        pg.translate(
+            300+cos(this.angle)*this.distance,
+            300+sin(this.angle)*this.distance
+        )
         pg.rotate(this.rotation)
         pg.noStroke()
         pg.fill(this.r,this.g,this.b)
@@ -261,75 +250,6 @@ class TunnelFlower{
 
         pg.fill(255,220,120)
         pg.circle(0,0,this.size/2)
-        pg.pop()
-    }
-}
-
-function plaidWormSketch(pg){
-    pg.background(12,3,12)
-
-    let rows=9
-    let cols=15
-    let sx=pg.width/cols
-    let sy=pg.height/rows
-
-    pg.noStroke()
-
-    for(let y=0;y<rows;y++){
-        for(let x=0;x<cols;x++){
-            let px=x*sx+sx/2+(y%2)*sx/2
-            let py=y*sy+sy/2
-            let pulse=sin(frameCount*4.5+x*40+y*50)
-            let alpha=map(pulse,-1,1,60,255)
-
-            if((x+y)%3===0){
-                pg.fill(255,45,155,alpha)
-            }else if((x+y)%3===1){
-                pg.fill(255,145,205,alpha)
-            }else{
-                pg.fill(180,25,100,alpha)
-            }
-
-            pg.circle(px,py,14+5*pulse)
-        }
-    }
-
-    wormTime+=0.003
-
-    for(let i=0;i<wormX.length-1;i++){
-        wormX[i]=wormX[i+1]
-        wormY[i]=wormY[i+1]
-    }
-
-    wormX[wormX.length-1]=map(noise(wormTime),0,1,60,540)
-    wormY[wormY.length-1]=map(noise(wormTime+100),0,1,40,360)
-
-    for(let i=0;i<wormX.length;i++){
-        let d=max(0,65*sin(map(i,0,wormX.length-1,0,180)))
-
-        if(d<1) continue
-
-        let pink=floor(i/8)%2===0
-
-        pg.push()
-        pg.translate(wormX[i],wormY[i])
-
-        if(pink){
-            pg.fill(255,45,155)
-            pg.stroke(255,190,225)
-        }else{
-            pg.fill(255)
-            pg.stroke(255,45,155)
-        }
-
-        pg.strokeWeight(1)
-        pg.circle(0,0,d)
-
-        for(let line=-d/2;line<d/2;line+=8){
-            pg.line(line,-d/2,line,d/2)
-            pg.line(-d/2,line,d/2,line)
-        }
-
         pg.pop()
     }
 }
@@ -374,7 +294,13 @@ function transitionSketch(pg){
             for(let y=-50;y<=50;y+=20){
                 for(let x=-20;x<=20;x+=20){
                     let px=x*w/65
-                    pg.quad(px,y-6,px+5*w/65,y,px,y+6,px-5*w/65,y)
+
+                    pg.quad(
+                        px,y-6,
+                        px+5*w/65,y,
+                        px,y+6,
+                        px-5*w/65,y
+                    )
                 }
             }
         }
@@ -409,7 +335,6 @@ function eyeTunnelSketch(pg){
     eyeOffset+=0.007
 
     pg.background(22,6,38)
-
     pg.noStroke()
 
     for(let i=18;i>=0;i--){
@@ -437,14 +362,22 @@ function eyeTunnelSketch(pg){
                 firstX=x
                 firstY=y
             }else{
-                pg.triangle(300,200,previousX,previousY,x,y)
+                pg.triangle(
+                    300,200,
+                    previousX,previousY,
+                    x,y
+                )
             }
 
             previousX=x
             previousY=y
         }
 
-        pg.triangle(300,200,previousX,previousY,firstX,firstY)
+        pg.triangle(
+            300,200,
+            previousX,previousY,
+            firstX,firstY
+        )
     }
 
     if(eyeTime%130===0){
@@ -534,7 +467,11 @@ function mushroomForestSketch(pg){
 
     for(let i=5;i>0;i--){
         pg.fill(90,30,150,8)
-        pg.ellipse(300,220,600*i*0.35,400*i*0.25)
+        pg.ellipse(
+            300,220,
+            600*i*0.35,
+            400*i*0.25
+        )
     }
 
     pg.fill(20,12,42)
@@ -557,11 +494,18 @@ function mushroomForestSketch(pg){
         pg.fill(180,130,255,25)
         pg.circle(s.x,s.y,s.size*5)
 
-        pg.fill(220,200,255,140+100*sin(mushroomTime*3+s.phase))
+        pg.fill(
+            220,200,255,
+            140+100*sin(mushroomTime*3+s.phase)
+        )
         pg.circle(s.x,s.y,s.size)
     }
 
-    drawRabbit(pg,120+sin(mushroomTime*0.5)*40,300)
+    drawRabbit(
+        pg,
+        120+sin(mushroomTime*0.5)*40,
+        300
+    )
 }
 
 function drawMushroom(pg,m){
@@ -576,7 +520,11 @@ function drawMushroom(pg,m){
 
     for(let i=5;i>0;i--){
         pg.fill(150,70,255,9)
-        pg.ellipse(0,-55,capWidth+i*18,35+i*12)
+        pg.ellipse(
+            0,-55,
+            capWidth+i*18,
+            35+i*12
+        )
     }
 
     pg.fill(205,190,225)
@@ -661,8 +609,12 @@ class Flower{
     paint(brushX,brushY){
         for(let p of this.petals){
             let a=this.rotations+p.angle
-            let px=this.x+cos(a)*(p.radius+p.length*0.25)*this.size
-            let py=this.y+sin(a)*(p.radius+p.length*0.25)*this.size
+
+            let px=this.x+
+                cos(a)*(p.radius+p.length*0.25)*this.size
+
+            let py=this.y+
+                sin(a)*(p.radius+p.length*0.25)*this.size
 
             if(dist(px,py,brushX,brushY)<19*this.size){
                 p.painted=min(1,p.painted+0.045)
@@ -740,8 +692,18 @@ class Flower{
             let t=i/24
 
             points.push({
-                x:roseBezier(x0,-p.width*0.7,p.length*0.35,x1,t),
-                y:roseBezier(y0,-p.width*1.1,-p.width*1.05,y1,t)
+                x:roseBezier(
+                    x0,
+                    -p.width*0.7,
+                    p.length*0.35,
+                    x1,t
+                ),
+                y:roseBezier(
+                    y0,
+                    -p.width*1.1,
+                    -p.width*1.05,
+                    y1,t
+                )
             })
         }
 
@@ -749,8 +711,18 @@ class Flower{
             let t=i/24
 
             points.push({
-                x:roseBezier(x1,p.length*0.5,-p.width*0.6,x0,t),
-                y:roseBezier(y1,p.width*0.9,p.width*0.8,y0,t)
+                x:roseBezier(
+                    x1,
+                    p.length*0.5,
+                    -p.width*0.6,
+                    x0,t
+                ),
+                y:roseBezier(
+                    y1,
+                    p.width*0.9,
+                    p.width*0.8,
+                    y0,t
+                )
             })
         }
 
@@ -769,14 +741,23 @@ class Flower{
         for(let i=0;i<points.length;i++){
             let a=points[i]
             let b=points[(i+1)%points.length]
+
             pg.line(a.x,a.y,b.x,b.y)
         }
 
         if(p.dots){
             pg.noStroke()
             pg.fill(p.painted>0.5?white:red)
-            pg.circle(p.length*0.3,-p.width*0.15,3.5)
-            pg.circle(p.length*0.58,p.width*0.12,4)
+            pg.circle(
+                p.length*0.3,
+                -p.width*0.15,
+                3.5
+            )
+            pg.circle(
+                p.length*0.58,
+                p.width*0.12,
+                4
+            )
         }
 
         pg.pop()
@@ -799,7 +780,10 @@ class PaintBrush{
         this.previousY=this.y
 
         this.x=frameCount*2.5%(pg.width+120)-60
-        this.y=pg.height*0.5+sin(frameCount*1.2)*pg.height*0.28+sin(frameCount*0.45)*35
+
+        this.y=pg.height*0.5+
+            sin(frameCount*1.2)*pg.height*0.28+
+            sin(frameCount*0.45)*35
 
         let dx=this.x-this.previousX
         let dy=this.y-this.previousY
