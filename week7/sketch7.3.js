@@ -129,10 +129,9 @@ function draw(){
 
     if(isPlaying&&video&&video.elt&&video.elt.readyState>=2){
         quadMaps[4].displayTexture(video)
-        quadMaps[5].displayTexture(video)
     }
 
-    // quadMaps[5].displayTexture(flowerBuf)
+    quadMaps[5].displayTexture(flowerBuf)
 }
 
 function rabbitTunnelSketch(pg){
