@@ -23,6 +23,9 @@ let eyeTime=0
 let eyeOffset=0
 let mushroomTime=0
 
+
+let vid1,vid2 
+
 function setup(){
     createCanvas(windowWidth,windowHeight,WEBGL)
     angleMode(DEGREES)
@@ -104,10 +107,12 @@ function setup(){
 
     video=createVideo(['alice.mp4'])
     video.hide()
-    video.volume(0)
+    // video.volume(1)
 }
 
 function draw(){
+
+    
     background(0)
 
     rabbitTunnelSketch(tunnelBuf)
@@ -115,6 +120,7 @@ function draw(){
     eyeTunnelSketch(eyeBuf)
     mushroomForestSketch(mushroomBuf)
     flowerRoseSketch(flowerBuf)
+    
 
     quadMaps[0].displayTexture(tunnelBuf)
     quadMaps[1].displayTexture(transitionBuf)
@@ -123,9 +129,10 @@ function draw(){
 
     if(isPlaying&&video&&video.elt&&video.elt.readyState>=2){
         quadMaps[4].displayTexture(video)
+        quadMaps[5].displayTexture(video)
     }
 
-    quadMaps[5].displayTexture(flowerBuf)
+    // quadMaps[5].displayTexture(flowerBuf)
 }
 
 function rabbitTunnelSketch(pg){
